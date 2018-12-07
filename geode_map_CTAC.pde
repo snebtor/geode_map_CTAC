@@ -9,6 +9,7 @@ import java.io.FileWriter;
 PGraphics pg;
 float sec;
 int mil;
+PShape halfdisk;
 
 color akasa = color(255, 95, 126); //black
 color vayu = color(97, 255, 225);//blue
@@ -22,6 +23,9 @@ boolean scene1 = true;
 boolean scene2 = false;
 boolean scene3 = false;
 boolean scene4 = false;
+boolean scene5 = false;
+boolean whiteline = false;
+boolean blackline = true;
 
 
 class Vertx {
@@ -60,6 +64,7 @@ void settings() {
 
 
 void setup() {
+  frameRate(25);
   cursor(CROSS);
   A = new PVector(0, 44);
   B = new PVector(142, 44);
@@ -67,6 +72,7 @@ void setup() {
   D = new PVector(370, 0);
   E = new PVector(370, 44);
   F = new PVector(512, 44);
+  halfdisk = loadShape("05.svg");
   
   //lights();
   //size(3840, 800 ,P3D);
@@ -95,14 +101,10 @@ void draw() {
    sec=second()*0.02;
    angle+=0.001;
    val4=sin(angle);
-   val3=map(val4,-1,1,0.12,0.9);
+   val3=map(val4,-1,1,0.12,0.9);// for gradient vales
    
    //background
-   pg.beginDraw();
-   pg.noStroke();
-   //pg.fill(akasa,20);
-   //pg.rect(0,0,pg.width,pg.height);
-   pg.endDraw();
+
    
   //window that is mapped
 
@@ -113,6 +115,7 @@ void draw() {
   if (scene2) noisy();
   if (scene3) ripples();
   if (scene4) fluid();
+   if (scene5) halfcirce();
   
   
   //paint the pg image
@@ -122,7 +125,7 @@ void draw() {
   text("TO SAVE PRESS W; TO RELOAD PRESS R", width-400,60);
   
   
-  xoff += random(-0.5,0.5);
+  xoff += random(-0.6,0.6);
   
   //ADD GEOMETRY CREATION TOOL )No network
   if (applytex == true && vertices.length != 0) {
@@ -227,5 +230,8 @@ void keyPressed() {
   if ( key == '2' )scene2 = !scene2;
   if ( key == '3' )scene3 = !scene3;
   if ( key == '4' )scene4 = !scene4;
-  //if ( key == '5' )scene4 = !scene4;
+  if ( key == '5' )scene5 = !scene5;
+  
+  if ( key == 'a' )whiteline=!whiteline;
+  if ( key == 's' )blackline=!blackline;
 }

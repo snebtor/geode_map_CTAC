@@ -14,15 +14,15 @@ for (int i = 0; i <= pg.height; i++) {
 for (int i = 0; i <= pg.width; i++) {
       float n = map(i,0,pg.width,0,val3);
       color c = lerpColor(phritivi, akasa, n );  
-      pg.stroke(c,60);
+      pg.stroke(c);
       pg.line(i, val2, i,120);
     }
     
 for (int i = 0; i <= pg.width; i++) {
       float n = map(i,0,pg.width,0,sec);
       color c = lerpColor(akasa, vayu, n);
-       pg.stroke(c,10);
-       pg.line(i, 220, i,val1);
+       pg.stroke(c);
+       pg.line(i, 220, i,val2);
     }
     pg.noStroke();
      //pg.fill(c);

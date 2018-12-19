@@ -1,5 +1,7 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import oscP5.*;
+import netP5.*;
 
 // Pressing 'w' stores the coordinates of current shapes
 // Pressing 'r' loads the shapes previously saved in polygons.txt
@@ -26,6 +28,9 @@ boolean scene4 = false;
 boolean scene5 = false;
 boolean whiteline = false;
 boolean blackline = true;
+
+OscP5 oscP5;
+float value;
 
 
 class Vertx {
@@ -72,7 +77,11 @@ void setup() {
   D = new PVector(370, 0);
   E = new PVector(370, 44);
   F = new PVector(512, 44);
+
+  oscP5 = new OscP5(this,8000);
+
   halfdisk = loadShape("05.svg");
+
   
   //lights();
   //size(3840, 800 ,P3D);
@@ -95,15 +104,28 @@ void setup() {
 
 void draw() {
    
-   val1=int(random(0,height)); 
-   val2=map(noise(xoff), 0, 1, 0,pg.height);
+   val1=map(value,0,1,10,pg.width); 
+   val2=map(value,0,1,10,600);
    mil=millis();
    sec=second()*0.02;
    angle+=0.001;
    val4=sin(angle);
+
+   val3=map(val4,-1,1,0.12,0.9);
+   text(value,10,10);
+   //background
+   pg.beginDraw();
+   pg.noStroke();
+   pg.fill(phritivi,20);
+   pg.ellipse(pg.width/2,pg.height/2,map(value,0,1,10,600),map(value,0,1,10,600));
+   
+   //pg.rect(0,0,pg.width,pg.height);
+   pg.endDraw();
+
    val3=map(val4,-1,1,0.12,0.9);// for gradient vales
    
    //background
+
 
    
   //window that is mapped
@@ -119,7 +141,7 @@ void draw() {
   
   
   //paint the pg image
-  image(pg, 10, 10); 
+  image(pg, 10, 10,100,100); 
   fill(0);
   text("EDITMODE: ON:", width-400,10);
   text("TO SAVE PRESS W; TO RELOAD PRESS R", width-400,60);
@@ -230,8 +252,24 @@ void keyPressed() {
   if ( key == '2' )scene2 = !scene2;
   if ( key == '3' )scene3 = !scene3;
   if ( key == '4' )scene4 = !scene4;
-  if ( key == '5' )scene5 = !scene5;
+
+    if ( key == '5' )scene5 = !scene5;
   
   if ( key == 'a' )whiteline=!whiteline;
   if ( key == 's' )blackline=!blackline;
+}
+
+
+// OSC events listener
+
+void oscEvent(OscMessage theOscMessage) {
+
+  //print(" typetag: "+theOscMessage.typetag());
+  
+  if(theOscMessage.checkAddrPattern("/env1")==true) { 
+    
+   value=theOscMessage.get(0).floatValue();
+  println(value);
+    
+  }
 }

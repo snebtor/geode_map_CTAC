@@ -6,13 +6,13 @@ void circle(){
 //stroke(255);
 
 for (int i = 0; i <= pg.height; i++) {
-      float n = map(i,0,pg.height,0,val3);
+      float n = map(i,0,pg.height,0,val1);
       color c = lerpColor(tejas, vayu, n);
       pg.stroke(c);
        pg.line(val1, i, pg.width,i);
     }
 for (int i = 0; i <= pg.width; i++) {
-      float n = map(i,0,pg.width,0,val3);
+      float n = map(i,0,pg.width,0,val1);
       color c = lerpColor(phritivi, akasa, n );  
       pg.stroke(c);
       pg.line(i, val2, i,120);

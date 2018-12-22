@@ -11,6 +11,7 @@ import netP5.*;
 PGraphics pg;
 float sec;
 int mil;
+int counter;
 PShape halfdisk;
 
 color akasa = color(255, 95, 126); //black
@@ -26,11 +27,13 @@ boolean scene2 = false;
 boolean scene3 = false;
 boolean scene4 = false;
 boolean scene5 = false;
+boolean scene6 = false;
 boolean whiteline = false;
 boolean blackline = true;
 
 OscP5 oscP5;
 float value;
+float door=200;
 
 
 class Vertx {
@@ -49,7 +52,7 @@ float xoff, yoff,val1,val2;
 
 int xspacing = 2;   // How far apart should each horizontal location be spaced
 int w;              // Width of entire wave
-
+int r1, r2, r3;
 
 float theta = 0.0;  // Start angle at 0
 float amplitude = 75.0;  // Height of wave
@@ -58,7 +61,7 @@ float dx;  // Value for incrementing X, a function of period and xspacing
 float[] yvalues;  // Using an array to store height values for the wave
  
 float time_passed;
-PVector A,B,C,D,E,F;
+PVector A,B,C,D,E,F,G,H;
 
 
 
@@ -71,16 +74,19 @@ void settings() {
 void setup() {
   frameRate(25);
   cursor(CROSS);
-  A = new PVector(0, 44);
-  B = new PVector(142, 44);
-  C = new PVector(142, 0);
-  D = new PVector(370, 0);
-  E = new PVector(370, 44);
-  F = new PVector(512, 44);
+  pg = createGraphics(340, 340);
+  A = new PVector((pg.width/2)-(door/2), (pg.height/2)-(door/2));
+  B = new PVector((pg.width/2)+(door/2), (pg.height/2)-(door/2));
+  C = new PVector((pg.width/2)+(door/2), (pg.height/2)+(door/2));
+  D = new PVector((pg.width/2)-(door/2), (pg.height/2)+(door/2));
+  E = new PVector(0, 0);
+  F = new PVector(pg.width, 0);
+  G = new PVector(pg.width, pg.height);
+  H = new PVector(0, pg.height);
 
   oscP5 = new OscP5(this,8000);
 
-  halfdisk = loadShape("05.svg");
+  halfdisk = loadShape("09.svg");
 
   
   //lights();
@@ -96,7 +102,7 @@ void setup() {
     a = 0;
     smooth();
     background(0);
-     w = 400+66; // connected to spacing of curved lines
+    w = 400+66; // connected to spacing of curved lines
   dx = (TWO_PI / period) * xspacing;
   yvalues = new float[w/xspacing];
   time_passed = 0;
@@ -105,46 +111,46 @@ void setup() {
 void draw() {
    
    val1=map(value,0,1,10,pg.width); 
-   val2=map(value,0,1,10,600);
+   
    mil=millis();
+   val2=map(val3,0,1,0,255);
    sec=second()*0.02;
-   angle+=0.001;
+   angle+=0.0001;
    val4=sin(angle);
-
-   val3=map(val4,-1,1,0.12,0.9);
-   text(value,10,10);
-   //background
-   pg.beginDraw();
-   pg.noStroke();
-   pg.fill(phritivi,20);
-   pg.ellipse(pg.width/2,pg.height/2,map(value,0,1,10,600),map(value,0,1,10,600));
+   val3=map(val4,-1,1,0.12,0.9); //tuned in for gradient
    
-   //pg.rect(0,0,pg.width,pg.height);
-   pg.endDraw();
-
-   val3=map(val4,-1,1,0.12,0.9);// for gradient vales
-   
-   //background
-
-
-   
-  //window that is mapped
-
-  //mapped animation #1
+   //area for prototyping
+ 
+if (counter >= 250) {
+    r1 = (int)random(1,7);
+    r2 = (int)random(1,7);  
+    r3 = (int)random(1,7);
+    counter = 0;
+  }
   
+  playanimation(r1);
+  playanimation(r2);
+  playanimation(r3);
+  counter++;
   //
   if (scene1) circle();
   if (scene2) noisy();
   if (scene3) ripples();
   if (scene4) fluid();
    if (scene5) halfcirce();
+   if (scene6) warp();
   
   
   //paint the pg image
   image(pg, 10, 10,100,100); 
-  fill(0);
-  text("EDITMODE: ON:", width-400,10);
-  text("TO SAVE PRESS W; TO RELOAD PRESS R", width-400,60);
+  fill(255);
+  text(value,10,30);
+  text(counter,10,40);
+  text(r1,10,50);
+  text(r2,10,60);
+  text(r3,10,70);
+  //text("EDITMODE: ON:", width-400,10);
+  //text("TO SAVE PRESS W; TO RELOAD PRESS R", width-400,60);
   
   
   xoff += random(-0.6,0.6);
@@ -254,10 +260,42 @@ void keyPressed() {
   if ( key == '4' )scene4 = !scene4;
 
     if ( key == '5' )scene5 = !scene5;
+     if ( key == '6' )scene6 = !scene6;
   
   if ( key == 'a' )whiteline=!whiteline;
   if ( key == 's' )blackline=!blackline;
+  
 }
+
+void playanimation(int r){
+  
+  switch (r) {
+  case 1:
+   circle();
+    break;
+  case 2:
+   noisy();
+    break;
+  case 3: 
+   ripples();
+
+    break;
+  case 4: 
+    fluid();
+    break;
+    
+     case 5: 
+   halfcirce();
+    
+    break;
+    
+    case 6: 
+     warp();
+    break;
+  } 
+
+}
+
 
 
 // OSC events listener
@@ -267,7 +305,6 @@ void oscEvent(OscMessage theOscMessage) {
   //print(" typetag: "+theOscMessage.typetag());
   
   if(theOscMessage.checkAddrPattern("/env1")==true) { 
-    
    value=theOscMessage.get(0).floatValue();
   println(value);
     

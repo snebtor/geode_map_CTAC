@@ -12,12 +12,12 @@ void ripples(){
   pg.beginShape();
   pg.scale(0.8);
   pg.translate(4,i);
-   pg.vertex(A.x,A.y);
-   pg.vertex(B.x,B.y);
-    pg.vertex(C.x-val3*13,C.y);
-    pg.vertex(D.x+val3*13,D.y);
-    pg.vertex(E.x,E.y);
-    pg.vertex(F.x,F.y);
+   pg.vertex(0,44);
+   pg.vertex(142,44);
+    pg.vertex(142-val3*13,0);
+    pg.vertex(370+val3*13,0);
+    pg.vertex(370,44);
+    pg.vertex(512,44);
   pg.endShape();
   pg.popMatrix();
   }

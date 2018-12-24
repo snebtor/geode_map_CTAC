@@ -14,7 +14,7 @@ void noisy(){
     pg.vertex(width,val2%pg.width/3);
  
   pg.vertex(width, height);
-  pg.vertex(0, val3);
+  pg.vertex(0, val1);
   pg.endShape(CLOSE);
 
 pg.endDraw();

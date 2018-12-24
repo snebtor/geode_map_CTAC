@@ -28,11 +28,12 @@ boolean scene3 = false;
 boolean scene4 = false;
 boolean scene5 = false;
 boolean scene6 = false;
+boolean scene7 = false;
 boolean whiteline = false;
 boolean blackline = true;
 
 OscP5 oscP5;
-float value;
+float valueenv1, valueenv2, valueenv3;
 float door=200;
 
 
@@ -50,7 +51,7 @@ boolean firstpress, polygonClosed, editMode, applytex;
 int x1, y1, x2, y2, a, verticesIndex;
 float xoff, yoff,val1,val2;
 
-int xspacing = 2;   // How far apart should each horizontal location be spaced
+int xspacing = 8;   // How far apart should each horizontal location be spaced
 int w;              // Width of entire wave
 int r1, r2, r3;
 
@@ -110,21 +111,20 @@ void setup() {
 
 void draw() {
    
-   val1=map(value,0,1,10,pg.width); 
-   
+   val1=map(valueenv1,0,1,10,pg.width); 
    mil=millis();
-   val2=map(val3,0,1,0,255);
+   val2=map(valueenv2,0,1,0,255);
    sec=second()*0.02;
    angle+=0.0001;
    val4=sin(angle);
-   val3=map(val4,-1,1,0.12,0.9); //tuned in for gradient
+   val3=map(valueenv3,0,1,0.12,0.9); //tuned in for gradient
    
    //area for prototyping
  
 if (counter >= 250) {
-    r1 = (int)random(1,7);
-    r2 = (int)random(1,7);  
-    r3 = (int)random(1,7);
+    r1 = (int)random(1,8);
+    r2 = (int)random(1,8);  
+    r3 = (int)random(1,8);
     counter = 0;
   }
   
@@ -139,16 +139,18 @@ if (counter >= 250) {
   if (scene4) fluid();
    if (scene5) halfcirce();
    if (scene6) warp();
+   if (scene7) triantunnel();
   
   
   //paint the pg image
   image(pg, 10, 10,100,100); 
   fill(255);
-  text(value,10,30);
+  text(valueenv1,10,30);
   text(counter,10,40);
   text(r1,10,50);
   text(r2,10,60);
   text(r3,10,70);
+  text(val4*180,10,80);
   //text("EDITMODE: ON:", width-400,10);
   //text("TO SAVE PRESS W; TO RELOAD PRESS R", width-400,60);
   
@@ -261,6 +263,7 @@ void keyPressed() {
 
     if ( key == '5' )scene5 = !scene5;
      if ( key == '6' )scene6 = !scene6;
+     if ( key == '7' )scene7 = !scene7;
   
   if ( key == 'a' )whiteline=!whiteline;
   if ( key == 's' )blackline=!blackline;
@@ -292,6 +295,11 @@ void playanimation(int r){
     case 6: 
      warp();
     break;
+    
+    case 7: 
+     triantunnel();
+    break;
+    
   } 
 
 }
@@ -305,8 +313,21 @@ void oscEvent(OscMessage theOscMessage) {
   //print(" typetag: "+theOscMessage.typetag());
   
   if(theOscMessage.checkAddrPattern("/env1")==true) { 
-   value=theOscMessage.get(0).floatValue();
-  println(value);
+   valueenv1=theOscMessage.get(0).floatValue();
+  println(valueenv1);
     
   }
+  if(theOscMessage.checkAddrPattern("/env2")==true) { 
+   valueenv2=theOscMessage.get(0).floatValue();
+  println(valueenv2);
+    
+  }
+  
+  if(theOscMessage.checkAddrPattern("/env3")==true) { 
+   valueenv3=theOscMessage.get(0).floatValue();
+  println(valueenv3);
+    
+  }
+  
+  
 }

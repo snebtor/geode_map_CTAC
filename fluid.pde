@@ -10,7 +10,7 @@ void calcWave1() {
 
   // For every x value, calculate a y value with sine function
   float amplitude = 0.1;
-  float frequency = 1.7;
+  float frequency = 2.7;
   float u_time = millis();
   
   float x = 0;
@@ -36,7 +36,7 @@ void renderWave1() {
   
   noStroke();
   float val=sin(theta); //0 to 6.
-  float val1=map(val,-1,1,100,255);
+  //float val1=map(val,-1,1,100,255);
   // 
   strokeCap(ROUND);
   strokeJoin(ROUND);

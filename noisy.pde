@@ -9,7 +9,7 @@ void noisy(){
   
     //xoff += 0.009;
     //yoff += 0.00005;
-    pg.fill(val4*180,val2%120,90,111);
+    pg.fill(val4*100,val2%120,90,111);
     pg.vertex(xoff,val1%pg.width);
     pg.vertex(width,val2%pg.width/3);
  

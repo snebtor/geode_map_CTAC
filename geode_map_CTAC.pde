@@ -113,7 +113,7 @@ void draw() {
    
    val1=map(valueenv1,0,1,10,pg.width); 
    mil=millis();
-   val2=map(valueenv2,0,1,0,255);
+   val2=map(valueenv2,0.5,1,0,255);
    sec=second()*0.02;
    angle+=0.0001;
    val4=sin(angle);
